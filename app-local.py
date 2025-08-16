@@ -344,45 +344,6 @@ def game_status():
         "can_lock": game_active and not winner and current_detected_move in ["rock", "paper", "scissors"]
     })
 
-@app.route('/manual_play', methods=['POST'])
-def manual_play():
-    """Allow manual game play for demo purposes"""
-    global scores, results, game_active, winner
-    
-    data = request.get_json()
-    player_move = data.get('move')
-    
-    if not game_active or player_move not in ["rock", "paper", "scissors"]:
-        return jsonify({"status": "error", "message": "Invalid move or game not active"})
-    
-    computer_move = get_computer_move()
-    round_winner = determine_winner(player_move, computer_move)
-    
-    # Update results
-    results["player_move"] = player_move
-    results["computer_move"] = computer_move
-    
-    if round_winner == "tie":
-        results["result"] = "It's a tie!"
-    elif round_winner == "player":
-        results["result"] = "You win this round!"
-        scores["player"] += 1
-    else:
-        results["result"] = "Computer wins this round!"
-        scores["computer"] += 1
-    
-    # Check if game is over
-    if scores["player"] >= 5:
-        game_active = False
-        winner = "player"
-        results["result"] = "You win the game!"
-    elif scores["computer"] >= 5:
-        game_active = False
-        winner = "computer"
-        results["result"] = "Computer wins the game!"
-    
-    return jsonify({"status": "success", "message": "Round played"})
-
 @app.route('/lock_move', methods=['POST'])
 def lock_move():
     global manual_lock_requested, current_detected_move
