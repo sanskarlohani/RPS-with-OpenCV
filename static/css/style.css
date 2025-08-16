@@ -182,6 +182,48 @@ h1 {
     margin-top: 5px;
 }
 
+/* Manual controls for demo */
+.manual-controls {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ecf0f1;
+    text-align: center;
+}
+
+.manual-controls h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.gesture-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.gesture-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.2s;
+    flex: 1;
+    max-width: 100px;
+}
+
+.gesture-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+.gesture-btn:active {
+    transform: translateY(0);
+}
+
 /* Instructions */
 .instructions {
     background-color: white;

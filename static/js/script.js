@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 winner = data.winner;
                 
                 // Update lock button state
-                if (data.can_lock && currentDetectedMove && 
+                if (lockMoveButton && data.can_lock && currentDetectedMove && 
                     ['rock', 'paper', 'scissors'].includes(currentDetectedMove)) {
                     lockMoveButton.disabled = false;
                     lockMoveButton.textContent = `Lock ${currentDetectedMove}`;
-                } else {
+                } else if (lockMoveButton) {
                     lockMoveButton.disabled = true;
                     lockMoveButton.textContent = 'Lock Move';
                 }
@@ -111,8 +111,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentDetectedMove = "";
                 
                 // Reset lock button
-                lockMoveButton.disabled = true;
-                lockMoveButton.textContent = 'Lock Move';
+                if (lockMoveButton) {
+                    lockMoveButton.disabled = true;
+                    lockMoveButton.textContent = 'Lock Move';
+                }
             }
         })
         .catch(error => {
@@ -122,7 +124,41 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add event listeners
     resetGameButton.addEventListener('click', resetGame);
-    lockMoveButton.addEventListener('click', lockMove);
+    if (lockMoveButton) {
+        lockMoveButton.addEventListener('click', lockMove);
+    }
+    
+    // Add manual play buttons for demo
+    const gestureButtons = document.querySelectorAll('.gesture-btn');
+    gestureButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const move = this.dataset.move;
+            playManualMove(move);
+        });
+    });
+    
+    // Manual play function for demo
+    function playManualMove(move) {
+        fetch('/manual_play', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ move: move })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Game state will be updated by the regular status polling
+                console.log('Move played:', move);
+            } else {
+                console.error('Error playing move:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error playing move:', error);
+        });
+    }
     
     // Update game status every 500ms
     setInterval(updateGameStatus, 500);
