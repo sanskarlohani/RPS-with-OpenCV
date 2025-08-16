@@ -1,0 +1,24 @@
+{
+  "name": "rps-hand-tracking",
+  "version": "1.0.0",
+  "description": "Rock Paper Scissors game with hand tracking using OpenCV and MediaPipe",
+  "main": "app.py",
+  "scripts": {
+    "start": "gunicorn --bind 0.0.0.0:$PORT app:app",
+    "dev": "python app.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sanskarlohani/RPS-with-OpenCV"
+  },
+  "keywords": [
+    "computer-vision",
+    "hand-tracking",
+    "mediapipe",
+    "opencv",
+    "flask",
+    "rock-paper-scissors"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

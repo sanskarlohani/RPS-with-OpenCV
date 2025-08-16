@@ -2,6 +2,8 @@
 
 A real-time rock-paper-scissors game that uses computer vision to detect hand gestures, allowing you to play against a computer opponent using just your webcam.
 
+🎮 **[Play Live Demo](https://your-app-name.onrender.com)** (Deploy to get this link)
+
 ## Features
 
 - Real-time hand tracking using OpenCV and MediaPipe
@@ -9,47 +11,40 @@ A real-time rock-paper-scissors game that uses computer vision to detect hand ge
 - Computer opponent that plays random moves
 - First to score 5 wins
 - Fully responsive web interface with camera controls
+- Visual countdown timer and manual lock button
 
 ## Tech Stack
 
 - **Backend**: Python (Flask)
 - **Computer Vision**: OpenCV + MediaPipe
 - **Frontend**: HTML/CSS/JavaScript
+- **Deployment**: Render/Heroku/Railway
 
-## Installation
+## Quick Deploy
 
-1. Clone this repository:
-```
-git clone https://github.com/yourusername/rps-hand-tracking.git
-cd rps-hand-tracking
-```
+### Deploy to Render (Free)
+1. Fork this repository
+2. Go to [Render.com](https://render.com)
+3. Connect your GitHub and select this repo
+4. Choose "Web Service"
+5. Use these settings:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn --bind 0.0.0.0:$PORT app:app`
+6. Deploy!
 
-2. Create a virtual environment and activate it:
-```
-python -m venv venv
-venv\Scripts\activate  # On Windows
-source venv/bin/activate  # On macOS/Linux
-```
-
-3. Install the required dependencies:
-```
-pip install flask opencv-python mediapipe numpy
-```
-
-## Usage
-
-1. Start the Flask application:
-```
-python app.py
+### Deploy to Heroku
+```bash
+# Install Heroku CLI first
+heroku create your-app-name
+git add .
+git commit -m "Deploy to Heroku"
+git push heroku main
 ```
 
-2. Open your web browser and navigate to:
-```
-http://127.0.0.1:5000/
-```
-
-3. Allow access to your webcam when prompted
-4. Show your hand gestures to play against the computer!
+### Deploy to Railway
+1. Go to [Railway.app](https://railway.app)
+2. Connect GitHub repo
+3. Deploy automatically
 
 ## How to Play
 
