@@ -1,21 +1,33 @@
 import os
 import cv2
 import numpy as np
-import mediapipe as mp
 import random
 from flask import Flask, render_template, Response, jsonify, request
 
+# Handle MediaPipe import for server environments
+try:
+    import mediapipe as mp
+    MEDIAPIPE_AVAILABLE = True
+except ImportError:
+    MEDIAPIPE_AVAILABLE = False
+    print("Warning: MediaPipe not available. Hand detection will be disabled.")
+
 app = Flask(__name__)
 
-# Initialize MediaPipe Hands
-mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
-hands = mp_hands.Hands(
-    static_image_mode=False,
-    max_num_hands=1,
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5
-)
+# Initialize MediaPipe Hands only if available
+if MEDIAPIPE_AVAILABLE:
+    mp_hands = mp.solutions.hands
+    mp_drawing = mp.solutions.drawing_utils
+    hands = mp_hands.Hands(
+        static_image_mode=False,
+        max_num_hands=1,
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5
+    )
+else:
+    mp_hands = None
+    mp_drawing = None
+    hands = None
 
 # Game state
 scores = {"player": 0, "computer": 0}
@@ -46,6 +58,9 @@ def detect_gesture(hand_landmarks):
     - Paper: All fingers are extended
     - Scissors: Index and middle fingers extended, others curled
     """
+    if not MEDIAPIPE_AVAILABLE or not mp_hands:
+        return "unknown"
+        
     # Get fingertip and finger base landmarks
     fingertips = [
         hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP],
@@ -127,7 +142,35 @@ def determine_winner(player_move, computer_move):
         return "computer"
 
 def generate_frames():
+    # Check if MediaPipe is available
+    if not MEDIAPIPE_AVAILABLE:
+        # Return a placeholder frame if MediaPipe is not available
+        while True:
+            # Create a simple frame with text
+            frame = np.zeros((480, 640, 3), dtype=np.uint8)
+            cv2.putText(frame, "MediaPipe not available on server", (50, 240), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+            cv2.putText(frame, "Use local development for hand tracking", (50, 280), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+            
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame_bytes = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            
     camera = cv2.VideoCapture(0)
+    if not camera.isOpened():
+        # If no camera available, return placeholder
+        while True:
+            frame = np.zeros((480, 640, 3), dtype=np.uint8)
+            cv2.putText(frame, "No camera available", (180, 240), 
+                       cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
+            
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame_bytes = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+    
     camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
     
@@ -156,16 +199,20 @@ def generate_frames():
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         
         # Process the frame and detect hands
-        results_mp = hands.process(rgb_frame)
+        if MEDIAPIPE_AVAILABLE and hands:
+            results_mp = hands.process(rgb_frame)
+        else:
+            results_mp = None
         
         # Draw hand annotations on the frame
-        if results_mp.multi_hand_landmarks:
+        if results_mp and results_mp.multi_hand_landmarks:
             for hand_landmarks in results_mp.multi_hand_landmarks:
-                mp_drawing.draw_landmarks(
-                    frame, 
-                    hand_landmarks, 
-                    mp_hands.HAND_CONNECTIONS
-                )
+                if MEDIAPIPE_AVAILABLE and mp_drawing:
+                    mp_drawing.draw_landmarks(
+                        frame, 
+                        hand_landmarks, 
+                        mp_hands.HAND_CONNECTIONS
+                    )
                 
                 # Detect gesture
                 detected_gesture = detect_gesture(hand_landmarks)
