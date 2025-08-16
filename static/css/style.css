@@ -1,0 +1,278 @@
+/* Reset and global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Two-column layout */
+.main-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.game-info {
+    flex: 1 1 380px;
+}
+
+.video-container {
+    flex: 1 1 560px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-size: 2.5rem;
+}
+
+/* Game information section */
+.game-info {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.score-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.score {
+    text-align: center;
+    flex: 1;
+}
+
+.score h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.score p {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.score-divider {
+    padding: 0 20px;
+}
+
+.score-divider p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.result-container {
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 30px;
+}
+
+#result-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.moves-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.move {
+    text-align: center;
+}
+
+.move h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.move p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.first-to {
+    text-align: center;
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+/* Video feed and controls */
+.video-container {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#video-feed {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+#reset-game {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin: 0 5px;
+}
+
+#reset-game:hover {
+    background-color: #2980b9;
+}
+
+#lock-move {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin: 0 5px;
+}
+
+#lock-move:hover:not(:disabled) {
+    background-color: #219a52;
+}
+
+#lock-move:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+#countdown-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #f39c12;
+    margin-top: 5px;
+}
+
+/* Instructions */
+.instructions {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.instructions h2 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.instructions ul {
+    list-style-position: inside;
+    margin-bottom: 15px;
+}
+
+.instructions li {
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    font-style: italic;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+    .container {
+        padding: 10px;
+    }
+    .main-layout {
+        flex-direction: column;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .score h2 {
+        font-size: 1.2rem;
+    }
+    
+    .score p {
+        font-size: 2rem;
+    }
+    
+    .score-divider p {
+        font-size: 1.2rem;
+    }
+    
+    #result-text {
+        font-size: 1rem;
+    }
+    
+    .move h3 {
+        font-size: 0.9rem;
+    }
+    
+    .move p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .game-info,
+    .video-container,
+    .instructions {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .score h2 {
+        font-size: 1rem;
+    }
+    
+    .score p {
+        font-size: 1.5rem;
+    }
+    
+    .moves-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .move {
+        margin-bottom: 10px;
+    }
+}

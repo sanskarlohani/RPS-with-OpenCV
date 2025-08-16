@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors with Hand Tracking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Rock Paper Scissors</h1>
+        <div class="main-layout">
+        <div class="game-info">
+            <div class="score-container">
+                <div class="score player-score">
+                    <h2>You</h2>
+                    <p id="player-score">0</p>
+                </div>
+                <div class="score-divider">
+                    <p>vs</p>
+                </div>
+                <div class="score computer-score">
+                    <h2>Computer</h2>
+                    <p id="computer-score">0</p>
+                </div>
+            </div>
+            <div class="result-container">
+                <p id="result-text">Show your hand gesture to play!</p>
+                <p id="countdown-text"></p>
+            </div>
+            <div class="moves-container">
+                <div class="move player-move">
+                    <h3>Your move:</h3>
+                    <p id="player-move">-</p>
+                </div>
+                <div class="move computer-move">
+                    <h3>Computer's move:</h3>
+                    <p id="computer-move">-</p>
+                </div>
+            </div>
+            <div class="first-to">
+                <p>First to score 5 wins!</p>
+            </div>
+        </div>
+        </div>
+
+        <div class="video-container">
+            <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+            <div class="controls">
+                <button id="lock-move" disabled>Lock Move</button>
+                <button id="reset-game">Reset Game</button>
+            </div>
+        </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>How to Play:</h2>
+            <ul>
+                <li><strong>Rock:</strong> Make a fist with all fingers curled in</li>
+                <li><strong>Paper:</strong> Show an open hand with all fingers extended</li>
+                <li><strong>Scissors:</strong> Extend only your index and middle fingers</li>
+            </ul>
+            <p>Hold your gesture steady for a moment to make your move!</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
